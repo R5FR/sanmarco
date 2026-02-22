@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Seed scripts (CJS runner)
+    "src/seed/**/*.cjs",
   ]),
 ]);
 
