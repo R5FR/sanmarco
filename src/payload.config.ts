@@ -37,8 +37,13 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || '',
-      ...(process.env.DATABASE_URI?.includes('neon.tech') ? { ssl: { rejectUnauthorized: true } } : {}),
+      connectionString: (process.env.DATABASE_URI || '').replace(
+        'sslmode=require',
+        'sslmode=verify-full',
+      ),
+      ...(process.env.DATABASE_URI?.includes('neon.tech')
+        ? { ssl: { rejectUnauthorized: true } }
+        : {}),
     },
   }),
   sharp,
