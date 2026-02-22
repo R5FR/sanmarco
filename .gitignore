@@ -31,11 +31,19 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
+.env.local
+.env.*.local
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
+
+# Payload CMS
+/media
+payload-types.ts
 next-env.d.ts
+
+.github/
