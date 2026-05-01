@@ -24,18 +24,11 @@ const dayLabels: Record<string, string> = {
   dimanche: 'Dimanche',
 }
 
-const dayIndexMap: Record<string, number> = {
-  dimanche: 0,
-  lundi: 1,
-  mardi: 2,
-  mercredi: 3,
-  jeudi: 4,
-  vendredi: 5,
-  samedi: 6,
-}
-
 export function OpeningHoursCard({ hours, specialNotice }: OpeningHoursCardProps) {
-  const today = new Date().getDay()
+  const todayInParis = new Intl.DateTimeFormat('fr-FR', {
+    timeZone: 'Europe/Paris',
+    weekday: 'long',
+  }).format(new Date()).toLowerCase()
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border/40 bg-card shadow-lg">
@@ -48,7 +41,7 @@ export function OpeningHoursCard({ hours, specialNotice }: OpeningHoursCardProps
         </div>
         <div className="space-y-0">
           {hours.map((entry, index) => {
-            const isToday = dayIndexMap[entry.day] === today
+            const isToday = entry.day.toLowerCase() === todayInParis
             return (
               <div
                 key={index}
@@ -67,7 +60,7 @@ export function OpeningHoursCard({ hours, specialNotice }: OpeningHoursCardProps
                   )}
                 </span>
                 {entry.closed ? (
-                  <span className="rounded-full bg-destructive/8 px-3 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-destructive">
+                  <span className="rounded-full bg-destructive/8 px-3 py-0.5 text-xs font-semibold uppercase tracking-wider text-destructive">
                     Fermé
                   </span>
                 ) : (
@@ -86,9 +79,9 @@ export function OpeningHoursCard({ hours, specialNotice }: OpeningHoursCardProps
           })}
         </div>
         {specialNotice && (
-          <div className="mt-6 flex items-start gap-2.5 rounded-xl bg-amber-50/50 border border-amber-200/30 p-4">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
-            <p className="text-[13px] leading-relaxed text-amber-900/70">{specialNotice}</p>
+          <div className="mt-6 flex items-start gap-2.5 rounded-xl bg-accent/8 border border-accent/25 p-4">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-italia-terracotta" />
+            <p className="text-sm leading-relaxed text-foreground/70">{specialNotice}</p>
           </div>
         )}
       </div>

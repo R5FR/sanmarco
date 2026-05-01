@@ -52,8 +52,12 @@ export default async function InfosPage() {
 
   try {
     const payload = await getPayloadClient()
-    settings = await payload.findGlobal({ slug: 'settings' })
-    openingHours = await payload.findGlobal({ slug: 'opening-hours' })
+    const [settingsData, openingHoursData] = await Promise.all([
+      payload.findGlobal({ slug: 'settings' }),
+      payload.findGlobal({ slug: 'opening-hours' }),
+    ])
+    settings = settingsData as SiteSettings
+    openingHours = openingHoursData as OpeningHoursData
   } catch {
     // Database not available
   }
@@ -78,16 +82,14 @@ export default async function InfosPage() {
           }}
         />
         <div className="hero-overlay absolute inset-0" />
-        <div className="grain absolute inset-0 z-[1]" />
         <div className="container relative z-10 mx-auto max-w-7xl px-6 text-center">
-          <div className="italia-divider mx-auto mb-8 w-24 rounded-full" />
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.3em] text-white/60">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-white/60">
             Nous rejoindre
           </p>
           <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
             Infos pratiques & Contact
           </h1>
-          <p className="mx-auto mt-6 max-w-lg text-[15px] leading-relaxed text-white/60">
+          <p className="mx-auto mt-6 max-w-lg text-base font-light leading-relaxed text-white/70">
             Toutes les informations pour nous rendre visite ou passer commande
           </p>
         </div>
@@ -95,11 +97,11 @@ export default async function InfosPage() {
 
       <div className="py-16 md:py-24">
         <div className="container mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-5">
             {/* Left column — Contact info & practical info */}
             <div className="space-y-6 lg:col-span-3">
               {/* Contact Cards Grid */}
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
                 {/* Address Card */}
                 <div className="group rounded-2xl border border-border/40 bg-card p-6 card-hover-lift">
                   <div className="flex items-start gap-4">
@@ -108,15 +110,15 @@ export default async function InfosPage() {
                     </div>
                     <div>
                       <h2 className="font-display text-lg font-semibold">Adresse</h2>
-                      <p className="mt-1 text-[13px] text-muted-foreground">{address}</p>
-                      <p className="text-[13px] text-muted-foreground">
+                      <p className="mt-1 text-sm text-muted-foreground">{address}</p>
+                      <p className="text-sm text-muted-foreground">
                         {postalCode} {city}
                       </p>
                       {settings?.googleMapsUrl && (
                         <Button
                           asChild
                           variant="link"
-                          className="mt-2 h-auto gap-1 p-0 text-primary text-[13px]"
+                          className="mt-2 h-auto gap-1 p-0 text-primary text-sm"
                         >
                           <a
                             href={settings.googleMapsUrl}
@@ -140,7 +142,7 @@ export default async function InfosPage() {
                     </div>
                     <div>
                       <h2 className="font-display text-lg font-semibold">Téléphone</h2>
-                      <p className="mt-1 text-[13px] text-muted-foreground">
+                      <p className="mt-1 text-sm text-muted-foreground">
                         Commander ou réserver
                       </p>
                       <Button asChild variant="default" size="sm" className="mt-3 rounded-full gap-2 shadow-md">
@@ -164,7 +166,7 @@ export default async function InfosPage() {
                         <h2 className="font-display text-lg font-semibold">Email</h2>
                         <a
                           href={`mailto:${email}`}
-                          className="mt-1 text-[13px] text-primary hover:underline"
+                          className="mt-1 text-sm text-primary hover:underline"
                         >
                           {email}
                         </a>
@@ -178,14 +180,14 @@ export default async function InfosPage() {
               <div className="rounded-2xl border border-border/40 bg-card">
                 <div className="p-8">
                   <h2 className="mb-6 font-display text-xl font-semibold">Comment venir</h2>
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     <div className="flex items-start gap-4">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground">
                         <Car className="h-5 w-5" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-[14px]">En voiture</h3>
-                        <p className="mt-1 text-[13px] text-muted-foreground">
+                        <h3 className="font-medium text-sm">En voiture</h3>
+                        <p className="mt-1 text-sm text-muted-foreground">
                           Avenue Roger Salengro, stationnement gratuit à proximité.
                         </p>
                       </div>
@@ -195,8 +197,8 @@ export default async function InfosPage() {
                         <TrainFront className="h-5 w-5" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-[14px]">En transports</h3>
-                        <p className="mt-1 text-[13px] text-muted-foreground">
+                        <h3 className="font-medium text-sm">En transports</h3>
+                        <p className="mt-1 text-sm text-muted-foreground">
                           Gare de Chaville — Rive Gauche ou Chaville — Vélizy (10 min à pied).
                         </p>
                       </div>
@@ -206,8 +208,8 @@ export default async function InfosPage() {
                         <ParkingCircle className="h-5 w-5" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-[14px]">Parking</h3>
-                        <p className="mt-1 text-[13px] text-muted-foreground">
+                        <h3 className="font-medium text-sm">Parking</h3>
+                        <p className="mt-1 text-sm text-muted-foreground">
                           Stationnement disponible devant le restaurant et dans les rues adjacentes.
                         </p>
                       </div>
@@ -217,8 +219,8 @@ export default async function InfosPage() {
                         <CreditCard className="h-5 w-5" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-[14px]">Paiement</h3>
-                        <p className="mt-1 text-[13px] text-muted-foreground">
+                        <h3 className="font-medium text-sm">Paiement</h3>
+                        <p className="mt-1 text-sm text-muted-foreground">
                           Carte bancaire, espèces et tickets restaurant acceptés.
                         </p>
                       </div>
@@ -234,22 +236,22 @@ export default async function InfosPage() {
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <div className="group rounded-xl bg-muted/40 p-5 text-center transition-all duration-300 hover:bg-primary/5">
                       <Utensils className="mx-auto mb-3 h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110" />
-                      <h3 className="text-[13px] font-medium">Sur place</h3>
-                      <p className="mt-1 text-[11px] text-muted-foreground">
+                      <h3 className="text-sm font-medium">Sur place</h3>
+                      <p className="mt-1 text-xs text-muted-foreground">
                         Salle climatisée, ambiance chaleureuse
                       </p>
                     </div>
                     <div className="group rounded-xl bg-muted/40 p-5 text-center transition-all duration-300 hover:bg-primary/5">
                       <Phone className="mx-auto mb-3 h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110" />
-                      <h3 className="text-[13px] font-medium">À emporter</h3>
-                      <p className="mt-1 text-[11px] text-muted-foreground">
+                      <h3 className="text-sm font-medium">À emporter</h3>
+                      <p className="mt-1 text-xs text-muted-foreground">
                         Commandez et récupérez vos plats
                       </p>
                     </div>
                     <div className="group rounded-xl bg-muted/40 p-5 text-center transition-all duration-300 hover:bg-primary/5">
                       <Car className="mx-auto mb-3 h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110" />
-                      <h3 className="text-[13px] font-medium">Livraison</h3>
-                      <p className="mt-1 text-[11px] text-muted-foreground">
+                      <h3 className="text-sm font-medium">Livraison</h3>
+                      <p className="mt-1 text-xs text-muted-foreground">
                         Livraison à domicile sur Chaville
                       </p>
                     </div>

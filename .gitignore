@@ -22,6 +22,8 @@
 
 # misc
 .DS_Store
+Thumbs.db
+desktop.ini
 *.pem
 
 # debug
@@ -30,7 +32,7 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env
 .env.local
 .env.*.local
@@ -40,10 +42,19 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-
-# Payload CMS
-/media
-payload-types.ts
 next-env.d.ts
 
+# Payload CMS — generated files
+/media
+/src/payload-types.ts
+
+# AI tooling — local only
+.claude/
+.impeccable.md
+CLAUDE.md
+IMPECCABLE.md
+
+# GitHub Actions
 .github/
+
+.gitignore

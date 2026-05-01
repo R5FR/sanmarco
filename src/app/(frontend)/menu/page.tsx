@@ -44,20 +44,21 @@ export default async function MenuPage() {
   try {
     const payload = await getPayloadClient()
 
-    const catResult = await payload.find({
-      collection: 'menu-categories',
-      sort: 'order',
-      limit: 100,
-    })
+    const [catResult, itemResult] = await Promise.all([
+      payload.find({
+        collection: 'menu-categories',
+        sort: 'order',
+        limit: 100,
+      }),
+      payload.find({
+        collection: 'menu-items',
+        where: { available: { equals: true } },
+        sort: 'order',
+        limit: 500,
+        depth: 1,
+      }),
+    ])
     categories = catResult.docs as unknown as MenuCategory[]
-
-    const itemResult = await payload.find({
-      collection: 'menu-items',
-      where: { available: { equals: true } },
-      sort: 'order',
-      limit: 500,
-      depth: 1,
-    })
     allItems = itemResult.docs as unknown as MenuItem[]
   } catch {
     // Database not available
@@ -77,28 +78,27 @@ export default async function MenuPage() {
       <div className="container mx-auto max-w-7xl px-6">
         {/* Header */}
         <div className="mb-20 text-center">
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-primary">
             A la carte
           </p>
           <h1 className="mb-4 font-display text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-            Notre <span className="text-gradient-warm">Carte</span>
+            Notre <span className="text-primary">Carte</span>
           </h1>
-          <p className="mx-auto max-w-lg text-[15px] leading-relaxed text-muted-foreground">
+          <p className="mx-auto max-w-lg text-base font-light leading-relaxed text-muted-foreground">
             Des pizzas artisanales, des pâtes fraîches et des spécialités italiennes
             préparées avec passion depuis 1997.
           </p>
-          <div className="italia-divider mx-auto mt-8 w-16 rounded-full" />
         </div>
 
         {/* Category sticky navigation */}
         {categories.length > 0 && (
-          <nav className="sticky top-20 z-30 -mx-6 mb-14 overflow-x-auto bg-background/80 backdrop-blur-xl px-6 py-3 border-b border-border/20">
+          <nav className="sticky top-20 z-30 -mx-6 mb-14 overflow-x-auto scrollbar-hide bg-background/80 backdrop-blur-xl px-6 py-3 border-b border-border/20">
             <div className="flex justify-center gap-2">
               {categories.map((cat) => (
                 <a
                   key={cat.id}
                   href={`#${cat.id}`}
-                  className="whitespace-nowrap rounded-full border border-border/40 bg-card px-5 py-2 text-[13px] font-medium transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/10"
+                  className="whitespace-nowrap rounded-full border border-border/40 bg-card px-5 py-2 text-sm font-medium transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:shadow-primary/10"
                 >
                   {cat.name}
                 </a>
@@ -112,16 +112,13 @@ export default async function MenuPage() {
           <div className="space-y-24">
             {itemsByCategory.map(({ category, items }) => (
               <section key={category.id} id={category.id} className="scroll-mt-36">
-                <div className="mb-10 flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/8 text-primary">
-                    <UtensilsCrossed className="h-5 w-5" />
-                  </div>
-                  <div className="flex-1">
+                <div className="mb-10 flex items-center gap-6">
+                  <div className="flex-shrink-0">
                     <h2 className="font-display text-2xl font-bold md:text-3xl">
                       {category.name}
                     </h2>
                     {category.description && (
-                      <p className="mt-1 text-[13px] text-muted-foreground">
+                      <p className="mt-1 text-sm text-muted-foreground">
                         {category.description}
                       </p>
                     )}

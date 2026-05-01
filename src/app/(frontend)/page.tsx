@@ -4,6 +4,7 @@ import { FeaturesSection } from '@/components/FeaturesSection'
 import { MenuPreviewSection } from '@/components/MenuPreviewSection'
 import { ContactBannerSection } from '@/components/ContactBannerSection'
 import { OpeningHoursCard } from '@/components/OpeningHoursCard'
+import { AnimateIn } from '@/components/AnimateIn'
 
 export const revalidate = 60 // Revalidate every 60 seconds
 
@@ -93,27 +94,27 @@ export default async function HomePage() {
 
       {/* Opening Hours Section */}
       {hours.length > 0 && (
-        <section className="section-gap relative overflow-hidden">
-          <div className="absolute inset-0 bg-dots opacity-30" />
-          <div className="container relative mx-auto max-w-7xl px-6">
-            <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
-              <div>
-                <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.3em] text-primary">
-                  Nos horaires
-                </p>
-                <h2 className="mb-4 font-display text-3xl font-bold tracking-tight md:text-4xl">
-                  Quand nous <span className="text-gradient-warm">rendre visite</span>
-                </h2>
-                <p className="mb-6 text-sm text-muted-foreground leading-relaxed">
-                  Nous vous accueillons du mardi au dimanche, midi et soir. Réservation
-                  recommandée le week-end. N&apos;hésitez pas à appeler pour vérifier nos
-                  horaires en période de fêtes.
-                </p>
-                <div className="italia-divider w-16 rounded-full" />
-              </div>
-              <div>
+        <section className="section-gap">
+          <div className="container mx-auto max-w-7xl px-6">
+            <div className="grid grid-cols-1 items-center gap-10 lg:gap-16 md:grid-cols-2">
+              <AnimateIn>
+                <div>
+                  <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-primary">
+                    Nos horaires
+                  </p>
+                  <h2 className="mb-4 font-display text-3xl font-bold tracking-tight md:text-4xl">
+                    Quand nous <span className="text-primary">rendre visite</span>
+                  </h2>
+                  <p className="mb-6 text-sm text-muted-foreground leading-relaxed">
+                    Nous vous accueillons du mardi au dimanche, midi et soir. Réservation
+                    recommandée le week-end. N&apos;hésitez pas à appeler pour vérifier nos
+                    horaires en période de fêtes.
+                  </p>
+                </div>
+              </AnimateIn>
+              <AnimateIn delay={150}>
                 <OpeningHoursCard hours={hours} specialNotice={openingHours?.specialNotice} />
-              </div>
+              </AnimateIn>
             </div>
           </div>
         </section>

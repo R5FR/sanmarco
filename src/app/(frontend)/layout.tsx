@@ -7,7 +7,6 @@ export default async function FrontendLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Fetch settings from Payload for navbar and footer
   let settings: {
     restaurantName?: string
     phone?: string
@@ -19,9 +18,24 @@ export default async function FrontendLayout({
     instagram?: string | null
     tripAdvisor?: string | null
   } | null = null
+
+  let openingHoursSchedule: Array<{
+    day: string
+    closed: boolean
+    openMorning?: string | null
+    closeMorning?: string | null
+    openEvening?: string | null
+    closeEvening?: string | null
+  }> | null = null
+
   try {
     const payload = await getPayloadClient()
-    settings = await payload.findGlobal({ slug: 'settings' })
+    const [settingsData, openingHoursData] = await Promise.all([
+      payload.findGlobal({ slug: 'settings' }),
+      payload.findGlobal({ slug: 'opening-hours' }),
+    ])
+    settings = settingsData
+    openingHoursSchedule = (openingHoursData as { schedule?: typeof openingHoursSchedule })?.schedule ?? null
   } catch {
     // Database may not be set up yet — use defaults
   }
@@ -38,8 +52,14 @@ export default async function FrontendLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar restaurantName={restaurantName} phone={phone} />
-      <main className="flex-1">{children}</main>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-primary focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg"
+      >
+        Aller au contenu principal
+      </a>
+      <Navbar phone={phone} />
+      <main id="main-content" className="flex-1">{children}</main>
       <Footer
         restaurantName={restaurantName}
         address={address}
@@ -50,6 +70,7 @@ export default async function FrontendLayout({
         facebook={facebook}
         instagram={instagram}
         tripAdvisor={tripAdvisor}
+        openingHours={openingHoursSchedule}
       />
     </div>
   )

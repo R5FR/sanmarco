@@ -1,6 +1,15 @@
 import Link from 'next/link'
 import { Phone, MapPin, Mail, ChefHat, Facebook, Instagram } from 'lucide-react'
 
+interface HourEntry {
+  day: string
+  closed: boolean
+  openMorning?: string | null
+  closeMorning?: string | null
+  openEvening?: string | null
+  closeEvening?: string | null
+}
+
 interface FooterProps {
   restaurantName: string
   address: string
@@ -11,6 +20,31 @@ interface FooterProps {
   facebook?: string | null
   instagram?: string | null
   tripAdvisor?: string | null
+  openingHours?: HourEntry[] | null
+}
+
+const DAY_SHORT: Record<string, string> = {
+  lundi: 'Lun', mardi: 'Mar', mercredi: 'Mer', jeudi: 'Jeu',
+  vendredi: 'Ven', samedi: 'Sam', dimanche: 'Dim',
+}
+
+function buildHoursSummary(hours: HourEntry[]) {
+  const openDays = hours.filter(h => !h.closed)
+  const closedDays = hours.filter(h => h.closed)
+  if (!openDays.length) return null
+  const sample = openDays[0]
+  const first = DAY_SHORT[openDays[0].day] ?? openDays[0].day
+  const last = DAY_SHORT[openDays[openDays.length - 1].day] ?? openDays[openDays.length - 1].day
+  return {
+    openRange: first === last ? first : `${first} — ${last}`,
+    morning: sample.openMorning && sample.closeMorning
+      ? `${sample.openMorning} — ${sample.closeMorning}` : null,
+    evening: sample.openEvening && sample.closeEvening
+      ? `${sample.openEvening} — ${sample.closeEvening}` : null,
+    closedNote: closedDays.length
+      ? `Fermé le ${closedDays.map(d => (DAY_SHORT[d.day] ?? d.day).toLowerCase()).join(', ')}`
+      : null,
+  }
 }
 
 const footerNavLinks = [
@@ -30,16 +64,14 @@ export function Footer({
   facebook,
   instagram,
   tripAdvisor,
+  openingHours,
 }: FooterProps) {
   const currentYear = new Date().getFullYear()
+  const hoursSummary = openingHours ? buildHoursSummary(openingHours) : null
 
   return (
     <footer className="relative bg-foreground text-background overflow-hidden">
-      {/* Italian tricolor divider at top */}
-      <div className="italia-divider w-full" />
-
-      {/* Subtle dot pattern */}
-      <div className="absolute inset-0 bg-dots opacity-[0.03]" />
+      <div className="h-px w-full bg-primary/40" />
 
       <div className="container relative mx-auto max-w-7xl px-6 py-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
@@ -51,7 +83,7 @@ export function Footer({
               </div>
               <span className="font-display text-xl font-bold text-background">San Marco</span>
             </div>
-            <p className="text-[13px] leading-relaxed text-background/50">
+            <p className="text-sm leading-relaxed text-background/50">
               Pizzeria familiale depuis 1997. Cuisine italienne authentique, pizzas artisanales
               et pâtes fraîches à Chaville.
             </p>
@@ -97,7 +129,7 @@ export function Footer({
 
           {/* Navigation */}
           <div>
-            <h3 className="mb-5 text-[10px] font-bold uppercase tracking-[0.3em] text-background/30">
+            <h3 className="mb-5 text-xs font-bold uppercase tracking-[0.3em] text-background/30">
               Navigation
             </h3>
             <nav className="flex flex-col gap-2">
@@ -105,7 +137,7 @@ export function Footer({
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-[13px] text-background/50 transition-all duration-200 hover:text-background hover:pl-1"
+                  className="text-sm text-background/50 transition-all duration-200 hover:text-background hover:pl-1"
                 >
                   {link.label}
                 </Link>
@@ -115,18 +147,18 @@ export function Footer({
 
           {/* Coordonnées */}
           <div>
-            <h3 className="mb-5 text-[10px] font-bold uppercase tracking-[0.3em] text-background/30">
+            <h3 className="mb-5 text-xs font-bold uppercase tracking-[0.3em] text-background/30">
               Coordonnées
             </h3>
             <div className="space-y-4">
-              <div className="flex items-start gap-3 text-[13px] text-background/50">
+              <div className="flex items-start gap-3 text-sm text-background/50">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-background/25" />
                 <div>
                   <p>{address}</p>
                   <p>{postalCode} {city}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 text-[13px] text-background/50">
+              <div className="flex items-center gap-3 text-sm text-background/50">
                 <Phone className="h-4 w-4 shrink-0 text-background/25" />
                 <a
                   href={`tel:${phone.replace(/\s/g, '')}`}
@@ -136,7 +168,7 @@ export function Footer({
                 </a>
               </div>
               {email && (
-                <div className="flex items-center gap-3 text-[13px] text-background/50">
+                <div className="flex items-center gap-3 text-sm text-background/50">
                   <Mail className="h-4 w-4 shrink-0 text-background/25" />
                   <a href={`mailto:${email}`} className="transition-colors duration-200 hover:text-background">
                     {email}
@@ -148,22 +180,36 @@ export function Footer({
 
           {/* Horaires résumé */}
           <div>
-            <h3 className="mb-5 text-[10px] font-bold uppercase tracking-[0.3em] text-background/30">
+            <h3 className="mb-5 text-xs font-bold uppercase tracking-[0.3em] text-background/30">
               Horaires
             </h3>
-            <div className="space-y-2 text-[13px] text-background/50">
-              <p className="font-medium text-background/60">Mar — Dim</p>
-              <p>11h30 — 14h30</p>
-              <p>18h30 — 22h30</p>
-              <div className="my-3 h-px w-12 bg-background/10" />
-              <p className="text-[11px] italic text-background/30">Fermé le lundi</p>
-            </div>
+            {hoursSummary ? (
+              <div className="space-y-2 text-sm text-background/50">
+                <p className="font-medium text-background/60">{hoursSummary.openRange}</p>
+                {hoursSummary.morning && <p>{hoursSummary.morning}</p>}
+                {hoursSummary.evening && <p>{hoursSummary.evening}</p>}
+                {hoursSummary.closedNote && (
+                  <>
+                    <div className="my-3 h-px w-12 bg-background/10" />
+                    <p className="text-xs italic text-background/30">{hoursSummary.closedNote}</p>
+                  </>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-2 text-sm text-background/50">
+                <p className="font-medium text-background/60">Mar — Dim</p>
+                <p>11h30 — 14h30</p>
+                <p>18h30 — 22h30</p>
+                <div className="my-3 h-px w-12 bg-background/10" />
+                <p className="text-xs italic text-background/30">Fermé le lundi</p>
+              </div>
+            )}
           </div>
         </div>
 
         <div className="my-10 h-px bg-background/[0.06]" />
 
-        <div className="flex flex-col items-center justify-between gap-3 text-center text-[11px] text-background/30 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-3 text-center text-xs text-background/30 md:flex-row">
           <p>&copy; {currentYear} {restaurantName}. Tous droits réservés.</p>
           <p>Restaurant italien & pizzeria à {city}</p>
         </div>
