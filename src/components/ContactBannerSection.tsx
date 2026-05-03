@@ -1,5 +1,10 @@
+'use client'
+
+import { useRef } from 'react'
+import { motion, useScroll, useTransform, type Variants } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Phone, MapPin, ArrowRight } from 'lucide-react'
+import lastImg from '@/app/imgs/san-marco.jpg'
 
 interface ContactBannerSectionProps {
   phone: string
@@ -7,26 +12,66 @@ interface ContactBannerSectionProps {
   city: string
 }
 
+const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number]
+
+const container: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.14, delayChildren: 0.1 } },
+}
+
+const item: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: { opacity: 1, y: 0 },
+}
+
 export function ContactBannerSection({ phone, address, city }: ContactBannerSectionProps) {
+  const ref = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  })
+  const bgY = useTransform(scrollYProgress, [0, 1], ['-15%', '15%'])
+
   return (
-    <section className="relative overflow-hidden section-gap">
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-[1.05]"
-        style={{
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1920&q=80)',
-        }}
-      />
+    <section ref={ref} className="relative overflow-hidden section-gap">
+      <div className="absolute inset-0">
+        <motion.div
+          style={{
+            y: bgY,
+            backgroundImage: `url(${lastImg.src})`,
+            backgroundPosition: 'center 40%',
+          }}
+          className="absolute inset-[-20%] bg-cover bg-center bg-no-repeat"
+        />
+      </div>
       <div className="hero-overlay absolute inset-0" />
 
-      <div className="container relative z-10 mx-auto max-w-2xl px-6 text-center">
-        <h2 className="mb-4 font-display text-3xl font-bold text-white md:text-4xl lg:text-5xl">
+      <motion.div
+        className="container relative z-10 mx-auto max-w-2xl px-6 text-center"
+        variants={container}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+      >
+        <motion.h2
+          variants={item}
+          transition={{ duration: 0.75, ease: EASE }}
+          className="mb-4 font-display text-3xl font-bold text-white md:text-4xl lg:text-5xl"
+        >
           Une envie de pizza ?
-        </h2>
-        <p className="mx-auto mb-10 max-w-md text-base font-light leading-relaxed text-white/75">
+        </motion.h2>
+        <motion.p
+          variants={item}
+          transition={{ duration: 0.75, ease: EASE }}
+          className="mx-auto mb-10 max-w-md text-base font-light leading-relaxed text-white/75"
+        >
           Appelez-nous pour commander ou réserver une table. Nous vous accueillons avec le sourire.
-        </p>
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+        </motion.p>
+        <motion.div
+          variants={item}
+          transition={{ duration: 0.75, ease: EASE }}
+          className="flex flex-col items-center justify-center gap-4 sm:flex-row"
+        >
           <Button
             asChild
             size="lg"
@@ -50,8 +95,8 @@ export function ContactBannerSection({ phone, address, city }: ContactBannerSect
               <ArrowRight className="h-3.5 w-3.5 opacity-0 -ml-2 transition-all duration-300 group-hover:opacity-100 group-hover:ml-0" />
             </a>
           </Button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   )
 }

@@ -1,10 +1,11 @@
 import { getPayloadClient } from '@/lib/payload'
 import { HeroSection } from '@/components/HeroSection'
-import { FeaturesSection } from '@/components/FeaturesSection'
+import { StorySection } from '@/components/StorySection'
 import { MenuPreviewSection } from '@/components/MenuPreviewSection'
 import { ContactBannerSection } from '@/components/ContactBannerSection'
 import { OpeningHoursCard } from '@/components/OpeningHoursCard'
 import { AnimateIn } from '@/components/AnimateIn'
+import { MarqueeStrip } from '@/components/MarqueeStrip'
 
 export const revalidate = 60 // Revalidate every 60 seconds
 
@@ -88,7 +89,9 @@ export default async function HomePage() {
     <>
       <HeroSection title={heroTitle} subtitle={heroSubtitle} phone={phone} />
 
-      <FeaturesSection />
+      <StorySection />
+
+      <MarqueeStrip />
 
       <MenuPreviewSection items={popularItems} />
 
@@ -97,7 +100,7 @@ export default async function HomePage() {
         <section className="section-gap">
           <div className="container mx-auto max-w-7xl px-6">
             <div className="grid grid-cols-1 items-center gap-10 lg:gap-16 md:grid-cols-2">
-              <AnimateIn>
+              <AnimateIn from="left">
                 <div>
                   <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-primary">
                     Nos horaires
@@ -112,7 +115,7 @@ export default async function HomePage() {
                   </p>
                 </div>
               </AnimateIn>
-              <AnimateIn delay={150}>
+              <AnimateIn from="right" delay={80}>
                 <OpeningHoursCard hours={hours} specialNotice={openingHours?.specialNotice} />
               </AnimateIn>
             </div>

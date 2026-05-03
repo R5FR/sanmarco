@@ -1,6 +1,12 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { AnimateIn } from '@/components/AnimateIn'
+import heroBgImg from '@/app/imgs/1777830438-3_image3.jpg'
+import storyImg from '@/app/imgs/1777830438-7_image3.jpg'
+import savoirImg1 from '@/app/imgs/1777830438-4_image.jpg'
+import savoirImg2 from '@/app/imgs/1777830438-3_image.jpg'
+import savoirImg3 from '@/app/imgs/1777830438-5_image3.jpg'
+import savoirImg4 from '@/app/imgs/1777830438-1_image2.jpg'
 import {
   Heart,
   Leaf,
@@ -39,18 +45,25 @@ const values = [
   },
 ]
 
+const EXPERIENCE_START_YEAR = 1997
+
 export default function AProposPage() {
+  const yearsOfExperience = new Date().getFullYear() - EXPERIENCE_START_YEAR
+
   return (
     <div>
       {/* Hero Section */}
       <section className="relative overflow-hidden py-24 md:py-32">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-[1.05]"
-          style={{
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1920&q=80)',
-          }}
-        />
+        <div className="absolute inset-0 scale-[1.05]">
+          <Image
+            src={heroBgImg}
+            alt="Intérieur du restaurant San Marco"
+            fill
+            className="object-cover object-center"
+            quality={90}
+            priority
+          />
+        </div>
         <div className="hero-overlay absolute inset-0" />
         <div className="container relative z-10 mx-auto max-w-7xl px-6 text-center">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-white/60">
@@ -80,7 +93,7 @@ export default function AProposPage() {
                 <p>
                   Fondée en 1997, la Pizzeria San Marco est née de la volonté d&apos;apporter
                   les véritables saveurs de l&apos;Italie au coeur de Chaville. Depuis plus de
-                  25 ans, nous perpétuons les traditions culinaires italiennes avec le même
+                  {' '}{yearsOfExperience} ans, nous perpétuons les traditions culinaires italiennes avec le même
                   enthousiasme qu&apos;au premier jour.
                 </p>
                 <p>
@@ -99,16 +112,16 @@ export default function AProposPage() {
             <div className="relative">
               <div className="relative overflow-hidden rounded-2xl shadow-2xl h-[500px]">
                 <Image
-                  src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=800&q=80"
+                  src={storyImg}
                   alt="Préparation de pizza artisanale"
                   fill
-                  className="object-cover transition-transform duration-700 hover:scale-105"
+                  className="object-cover object-center transition-transform duration-700 hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
               {/* Year badge */}
               <div className="absolute -bottom-8 -left-8 rounded-2xl bg-primary p-6 text-primary-foreground shadow-2xl shadow-primary/25">
-                <p className="font-display text-4xl font-bold">25+</p>
+                <p className="font-display text-4xl font-bold">{yearsOfExperience}</p>
                 <p className="text-sm text-primary-foreground/80">années d&apos;expérience</p>
               </div>
             </div>
@@ -151,37 +164,37 @@ export default function AProposPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="relative overflow-hidden rounded-2xl h-64">
                   <Image
-                    src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80"
-                    alt="Pizza sortant du four"
+                    src={savoirImg1}
+                    alt="Arancini faits maison"
                     fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    className="object-cover object-center transition-transform duration-500 hover:scale-105"
                     sizes="(max-width: 640px) calc(50vw - 12px), (max-width: 1024px) calc(50vw - 24px), calc(25vw - 20px)"
                   />
                 </div>
                 <div className="relative overflow-hidden rounded-2xl mt-8 h-64">
                   <Image
-                    src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&q=80"
-                    alt="Ingrédients frais italiens"
+                    src={savoirImg2}
+                    alt="Grissini et farine artisanale"
                     fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    className="object-cover object-center transition-transform duration-500 hover:scale-105"
                     sizes="(max-width: 640px) calc(50vw - 12px), (max-width: 1024px) calc(50vw - 24px), calc(25vw - 20px)"
                   />
                 </div>
                 <div className="relative overflow-hidden rounded-2xl h-64">
                   <Image
-                    src="https://images.unsplash.com/photo-1579684947550-22e945225d9a?w=600&q=80"
-                    alt="Pâtes fraîches"
+                    src={savoirImg3}
+                    alt="Meringues maison en préparation"
                     fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    className="object-cover object-center transition-transform duration-500 hover:scale-105"
                     sizes="(max-width: 640px) calc(50vw - 12px), (max-width: 1024px) calc(50vw - 24px), calc(25vw - 20px)"
                   />
                 </div>
                 <div className="relative overflow-hidden rounded-2xl mt-8 h-64">
                   <Image
-                    src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80"
-                    alt="Ambiance du restaurant"
+                    src={savoirImg4}
+                    alt="Charcuteries italiennes tranchées"
                     fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    className="object-cover object-center transition-transform duration-500 hover:scale-105"
                     sizes="(max-width: 640px) calc(50vw - 12px), (max-width: 1024px) calc(50vw - 24px), calc(25vw - 20px)"
                   />
                 </div>

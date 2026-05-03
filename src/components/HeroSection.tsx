@@ -1,5 +1,11 @@
+'use client'
+
+import Image from 'next/image'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform, type Variants } from 'framer-motion'
 import { Button } from '@/components/ui/button'
-import { Phone, ArrowRight } from 'lucide-react'
+import { Phone, ArrowRight, ChevronDown } from 'lucide-react'
+import heroImg from '@/app/imgs/1777830438-2_image4.jpg'
 
 interface HeroSectionProps {
   title: string
@@ -7,34 +13,128 @@ interface HeroSectionProps {
   phone: string
 }
 
-export function HeroSection({ title, subtitle, phone }: HeroSectionProps) {
+const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number]
+const EASE_SPRING = { type: 'spring', stiffness: 80, damping: 18 } as const
+
+const container: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
+}
+
+const wordReveal: Variants = {
+  hidden: { y: '115%', opacity: 0 },
+  visible: { y: '0%', opacity: 1 },
+}
+
+const fadeSlide: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0 },
+}
+
+function SplitTitle({ title }: { title: string }) {
+  const words = title.split(' ')
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
-      {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-[1.08]"
-        style={{
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1920&q=80)',
-        }}
+    <motion.h1
+      className="mb-8 font-display text-5xl font-bold tracking-tight text-white md:text-7xl lg:text-[5.5rem] leading-[1.05]"
+      variants={container}
+      initial="hidden"
+      animate="visible"
+    >
+      {words.map((word, i) => (
+        <span key={i} className="inline-block overflow-hidden leading-[1.15] mr-[0.22em] last:mr-0">
+          <motion.span
+            className="inline-block"
+            variants={wordReveal}
+            transition={{ duration: 0.85, ease: EASE, delay: i * 0.09 + 0.2 }}
+          >
+            {word}
+          </motion.span>
+        </span>
+      ))}
+    </motion.h1>
+  )
+}
+
+export function HeroSection({ title, subtitle, phone }: HeroSectionProps) {
+  const ref = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end start'],
+  })
+
+  // Bg parallax — moves slower, stays behind
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '38%'])
+  // Bg scale — zooms in slightly as it exits
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.12, 1.22])
+  // Overlay darkens as you scroll (adds depth to exit)
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 1.6])
+  // Content floats up faster than bg — creates separation depth
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '-18%'])
+  // All content fades as hero exits viewport
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0])
+  // Scroll indicator fades quickly
+  const indicatorOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
+
+  return (
+    <section ref={ref} className="relative min-h-[96vh] flex items-center justify-center overflow-hidden">
+      {/* Parallax + scale background */}
+      <motion.div
+        style={{ y: bgY, scale: bgScale }}
+        className="absolute inset-0 origin-center"
+      >
+        <Image
+          src={heroImg}
+          alt="Ambiance San Marco le soir"
+          fill
+          className="object-cover object-[center_70%]"
+          priority
+        />
+      </motion.div>
+
+      {/* Overlay — darkens on scroll exit */}
+      <motion.div
+        style={{ opacity: overlayOpacity }}
+        className="hero-overlay absolute inset-0"
       />
-      <div className="hero-overlay absolute inset-0" />
 
-      <div className="container relative z-10 mx-auto max-w-7xl px-6 py-28 md:py-40">
+      {/* Content — floats up + fades on scroll */}
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="container relative z-10 mx-auto max-w-7xl px-6 py-28 md:py-40"
+      >
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-6 text-xs font-semibold uppercase tracking-[0.3em] text-white/50 animate-fade-in-up">
+          {/* Eyebrow */}
+          <motion.p
+            className="mb-6 text-xs font-semibold uppercase tracking-[0.3em] text-white/50"
+            initial={{ opacity: 0, letterSpacing: '0.5em' }}
+            animate={{ opacity: 1, letterSpacing: '0.3em' }}
+            transition={{ duration: 1.2, ease: EASE, delay: 0.1 }}
+          >
             Restaurant italien authentique
-          </p>
+          </motion.p>
 
-          <h1 className="mb-8 font-display text-5xl font-bold tracking-tight text-white md:text-7xl lg:text-[5.5rem] leading-[0.95] animate-fade-in-up animation-delay-100">
-            {title}
-          </h1>
+          {/* Title — word by word */}
+          <SplitTitle title={title} />
 
-          <p className="mx-auto mb-12 max-w-xl text-base font-light leading-relaxed text-white/75 md:text-lg animate-fade-in-up animation-delay-200">
+          {/* Subtitle */}
+          <motion.p
+            className="mx-auto mb-12 max-w-xl text-base font-light leading-relaxed text-white/75 md:text-lg"
+            variants={fadeSlide}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.85, ease: EASE, delay: 0.75 }}
+          >
             {subtitle}
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center animate-fade-in-up animation-delay-300">
+          {/* Buttons */}
+          <motion.div
+            className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
+            variants={fadeSlide}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.85, ease: EASE, delay: 0.92 }}
+          >
             <Button
               asChild
               size="lg"
@@ -57,16 +157,42 @@ export function HeroSection({ title, subtitle, phone }: HeroSectionProps) {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </a>
             </Button>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        style={{ opacity: indicatorOpacity }}
+        className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 0.8 }}
+      >
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 1.7, ease: 'easeInOut' }}
+        >
+          <ChevronDown className="h-5 w-5 text-white/35" />
+        </motion.div>
+      </motion.div>
 
       {/* Bottom wave */}
       <div className="absolute bottom-0 left-0 right-0 z-10">
-        <svg viewBox="0 0 1440 90" fill="none" preserveAspectRatio="none" className="w-full h-16 md:h-20 text-background">
+        <svg viewBox="0 0 1440 90" fill="none" preserveAspectRatio="none" className="w-full h-16 md:h-20">
+          <defs>
+            <pattern id="wave-grain" x="0" y="0" width="400" height="400" patternUnits="userSpaceOnUse">
+              <rect width="400" height="400" fill="oklch(0.902 0.040 72)" />
+              <image
+                href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.48 0.82' numOctaves='5' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.16'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E"
+                width="400"
+                height="400"
+              />
+            </pattern>
+          </defs>
           <path
             d="M0 90h1440V45C1340 70 1180 80 960 65 740 50 480 30 240 45 120 52 60 55 0 50v40z"
-            fill="currentColor"
+            fill="url(#wave-grain)"
           />
         </svg>
       </div>

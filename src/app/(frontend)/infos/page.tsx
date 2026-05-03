@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getPayloadClient } from '@/lib/payload'
 import { OpeningHoursCard } from '@/components/OpeningHoursCard'
 import { Button } from '@/components/ui/button'
+import bgImg from '@/app/imgs/devanture.jpg'
 import {
   Phone,
   MapPin,
@@ -77,8 +78,8 @@ export default async function InfosPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-[1.05]"
           style={{
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&q=80)',
+            backgroundImage: `url(${bgImg.src})`,
+            backgroundPosition: 'center 15%',
           }}
         />
         <div className="hero-overlay absolute inset-0" />
