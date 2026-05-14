@@ -85,8 +85,7 @@ export function StorySection() {
           <div className="relative">
             {/* Main image */}
             <motion.div
-              className="relative overflow-hidden rounded-2xl shadow-2xl"
-              style={{ height: 480 }}
+              className="relative overflow-hidden rounded-2xl shadow-2xl h-72 sm:h-96 md:h-[480px]"
               initial={{ opacity: 0, x: 50, scale: 0.96 }}
               whileInView={{ opacity: 1, x: 0, scale: 1 }}
               viewport={{ once: true, margin: '0px 0px -60px 0px' }}
@@ -101,9 +100,9 @@ export function StorySection() {
               />
             </motion.div>
 
-            {/* Floating small image — bottom-left overlap */}
+            {/* Floating small image — bottom-left overlap, desktop only */}
             <motion.div
-              className="absolute -bottom-8 -left-6 w-44 md:w-52 overflow-hidden rounded-xl shadow-xl border-4 border-background"
+              className="hidden md:block absolute -bottom-8 -left-6 w-44 md:w-52 overflow-hidden rounded-xl shadow-xl border-4 border-background"
               style={{ height: 160 }}
               initial={{ opacity: 0, scale: 0.8, x: -20, y: 20 }}
               whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
@@ -119,9 +118,9 @@ export function StorySection() {
               />
             </motion.div>
 
-            {/* Floating small image — top-right overlap */}
+            {/* Floating small image — top-right overlap, desktop only */}
             <motion.div
-              className="absolute -top-6 -right-6 w-36 md:w-44 overflow-hidden rounded-xl shadow-xl border-4 border-background"
+              className="hidden md:block absolute -top-6 -right-6 w-36 md:w-44 overflow-hidden rounded-xl shadow-xl border-4 border-background"
               style={{ height: 130 }}
               initial={{ opacity: 0, scale: 0.8, x: 20, y: -20 }}
               whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
@@ -137,15 +136,15 @@ export function StorySection() {
               />
             </motion.div>
 
-            {/* Year badge */}
+            {/* Year badge — inside image on mobile, overflowing on desktop */}
             <motion.div
-              className="absolute -bottom-4 right-6 rounded-2xl bg-primary px-5 py-4 text-primary-foreground shadow-xl shadow-primary/30"
+              className="absolute bottom-4 right-4 md:-bottom-4 md:right-6 rounded-2xl bg-primary px-4 py-3 md:px-5 md:py-4 text-primary-foreground shadow-xl shadow-primary/30"
               initial={{ opacity: 0, scale: 0.5, rotate: 6 }}
               whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
               viewport={{ once: true }}
               transition={{ type: 'spring', stiffness: 200, damping: 18, delay: 0.45 }}
             >
-              <p className="font-display text-3xl font-bold leading-none">{years}</p>
+              <p className="font-display text-2xl md:text-3xl font-bold leading-none">{years}</p>
               <p className="text-xs text-primary-foreground/75 mt-0.5">ans d&apos;expérience</p>
             </motion.div>
           </div>

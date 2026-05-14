@@ -14,7 +14,6 @@ interface HeroSectionProps {
 }
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number]
-const EASE_SPRING = { type: 'spring', stiffness: 80, damping: 18 } as const
 
 const container: Variants = {
   hidden: {},
@@ -129,7 +128,7 @@ export function HeroSection({ title, subtitle, phone }: HeroSectionProps) {
 
           {/* Buttons */}
           <motion.div
-            className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
+            className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center sm:gap-4"
             variants={fadeSlide}
             initial="hidden"
             animate="visible"
@@ -139,18 +138,19 @@ export function HeroSection({ title, subtitle, phone }: HeroSectionProps) {
               asChild
               size="lg"
               variant="default"
-              className="group rounded-full px-8 text-base font-semibold shadow-2xl gap-2"
+              className="group rounded-full px-8 text-base font-semibold shadow-2xl gap-2 w-full sm:w-auto"
             >
               <a href={`tel:${phone.replace(/\s/g, '')}`}>
                 <Phone className="h-4 w-4 transition-transform group-hover:rotate-12" />
-                Commander : {phone}
+                <span className="sm:hidden">{phone}</span>
+                <span className="hidden sm:inline">Commander : {phone}</span>
               </a>
             </Button>
             <Button
               asChild
               size="lg"
               variant="outline"
-              className="group rounded-full border-white/40 bg-white/10 px-8 text-base text-white backdrop-blur-md hover:bg-white/20 hover:text-white hover:border-white/60 gap-2 transition-all duration-300"
+              className="group rounded-full border-white/40 bg-white/10 px-8 text-base text-white backdrop-blur-md hover:bg-white/20 hover:text-white hover:border-white/60 gap-2 transition-all duration-300 w-full sm:w-auto"
             >
               <a href="/menu">
                 Voir notre carte

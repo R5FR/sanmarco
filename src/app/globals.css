@@ -212,6 +212,15 @@ html {
   display: none;
 }
 
+/* ===== PHONE PULSE ===== */
+@keyframes phone-pulse {
+  0%, 100% { box-shadow: 0 8px 28px -4px oklch(0.44 0.18 28 / 35%), 0 0 0 0 oklch(0.44 0.18 28 / 35%); }
+  55% { box-shadow: 0 8px 28px -4px oklch(0.44 0.18 28 / 35%), 0 0 0 12px oklch(0.44 0.18 28 / 0%); }
+}
+.phone-pulse {
+  animation: phone-pulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 /* ===== MOTION SAFETY ===== */
 @media (prefers-reduced-motion: reduce) {
   html {

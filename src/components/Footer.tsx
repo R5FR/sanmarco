@@ -36,11 +36,11 @@ function buildHoursSummary(hours: HourEntry[]) {
   const first = DAY_SHORT[openDays[0].day] ?? openDays[0].day
   const last = DAY_SHORT[openDays[openDays.length - 1].day] ?? openDays[openDays.length - 1].day
   return {
-    openRange: first === last ? first : `${first} — ${last}`,
+    openRange: first === last ? first : `${first} – ${last}`,
     morning: sample.openMorning && sample.closeMorning
-      ? `${sample.openMorning} — ${sample.closeMorning}` : null,
+      ? `${sample.openMorning} – ${sample.closeMorning}` : null,
     evening: sample.openEvening && sample.closeEvening
-      ? `${sample.openEvening} — ${sample.closeEvening}` : null,
+      ? `${sample.openEvening} – ${sample.closeEvening}` : null,
     closedNote: closedDays.length
       ? `Fermé le ${closedDays.map(d => (DAY_SHORT[d.day] ?? d.day).toLowerCase()).join(', ')}`
       : null,

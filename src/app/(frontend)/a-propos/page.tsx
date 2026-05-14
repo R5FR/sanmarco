@@ -92,7 +92,7 @@ export default function AProposPage() {
               <div className="space-y-4 text-base font-light text-muted-foreground leading-relaxed">
                 <p>
                   Fondée en 1997, la Pizzeria San Marco est née de la volonté d&apos;apporter
-                  les véritables saveurs de l&apos;Italie au coeur de Chaville. Depuis plus de
+                  les véritables saveurs de l&apos;Italie au cœur de Chaville. Depuis plus de
                   {' '}{yearsOfExperience} ans, nous perpétuons les traditions culinaires italiennes avec le même
                   enthousiasme qu&apos;au premier jour.
                 </p>
@@ -109,8 +109,8 @@ export default function AProposPage() {
                 </p>
               </div>
             </div>
-            <div className="relative">
-              <div className="relative overflow-hidden rounded-2xl shadow-2xl h-[500px]">
+            <div className="relative pb-6 md:pb-0">
+              <div className="relative overflow-hidden rounded-2xl shadow-2xl h-72 sm:h-96 md:h-[500px]">
                 <Image
                   src={storyImg}
                   alt="Préparation de pizza artisanale"
@@ -119,9 +119,9 @@ export default function AProposPage() {
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
-              {/* Year badge */}
-              <div className="absolute -bottom-8 -left-8 rounded-2xl bg-primary p-6 text-primary-foreground shadow-2xl shadow-primary/25">
-                <p className="font-display text-4xl font-bold">{yearsOfExperience}</p>
+              {/* Year badge — inside image on mobile, overflowing on desktop */}
+              <div className="absolute bottom-10 left-4 md:-bottom-8 md:-left-8 rounded-2xl bg-primary p-4 md:p-6 text-primary-foreground shadow-2xl shadow-primary/25">
+                <p className="font-display text-3xl md:text-4xl font-bold">{yearsOfExperience}</p>
                 <p className="text-sm text-primary-foreground/80">années d&apos;expérience</p>
               </div>
             </div>

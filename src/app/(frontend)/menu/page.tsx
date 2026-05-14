@@ -79,7 +79,7 @@ export default async function MenuPage() {
         {/* Header */}
         <div className="mb-20 text-center">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-primary">
-            A la carte
+            À la carte
           </p>
           <h1 className="mb-4 font-display text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
             Notre <span className="text-primary">Carte</span>

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import { getPayloadClient } from '@/lib/payload'
 import { OpeningHoursCard } from '@/components/OpeningHoursCard'
 import { Button } from '@/components/ui/button'
@@ -75,13 +76,15 @@ export default async function InfosPage() {
     <div>
       {/* Hero Section */}
       <section className="relative overflow-hidden py-24 md:py-32">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-[1.05]"
-          style={{
-            backgroundImage: `url(${bgImg.src})`,
-            backgroundPosition: 'center 15%',
-          }}
-        />
+        <div className="absolute inset-0 scale-[1.05]">
+          <Image
+            src={bgImg}
+            alt=""
+            fill
+            className="object-cover object-[center_15%]"
+            priority
+          />
+        </div>
         <div className="hero-overlay absolute inset-0" />
         <div className="container relative z-10 mx-auto max-w-7xl px-6 text-center">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-white/60">
@@ -272,7 +275,7 @@ export default async function InfosPage() {
                   />
                 ) : (
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2628.!2d2.1896!3d48.8064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s1764+avenue+Roger+Salengro+92370+Chaville!5e0!3m2!1sfr!2sfr!4v1"
+                    src="https://maps.google.com/maps?q=1764+Avenue+Roger+Salengro,+92370+Chaville,+France&output=embed&hl=fr&z=16"
                     className="aspect-[4/3] w-full"
                     style={{ border: 0 }}
                     allowFullScreen

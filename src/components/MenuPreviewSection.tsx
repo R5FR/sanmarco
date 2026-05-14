@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, type Variants } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { MenuItemCard } from '@/components/MenuItemCard'
 import { ArrowRight } from 'lucide-react'
