@@ -208,6 +208,69 @@ export const Settings: GlobalConfig = {
           ],
         },
         {
+          label: 'Popup',
+          fields: [
+            {
+              name: 'popupEnabled',
+              type: 'checkbox',
+              label: 'Activer le popup',
+              defaultValue: false,
+              admin: {
+                description: 'Affiche un popup au chargement de la page d\'accueil.',
+              },
+            },
+            {
+              name: 'popupTitle',
+              type: 'text',
+              label: 'Titre du popup',
+              admin: {
+                condition: (data) => data?.popupEnabled,
+              },
+            },
+            {
+              name: 'popupSubtitle',
+              type: 'text',
+              label: 'Sous-titre',
+              admin: {
+                condition: (data) => data?.popupEnabled,
+              },
+            },
+            {
+              name: 'popupContent',
+              type: 'textarea',
+              label: 'Contenu',
+              admin: {
+                condition: (data) => data?.popupEnabled,
+              },
+            },
+            {
+              name: 'popupImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Image (optionnelle)',
+              admin: {
+                condition: (data) => data?.popupEnabled,
+              },
+            },
+            {
+              name: 'popupButtonText',
+              type: 'text',
+              label: 'Texte du bouton',
+              admin: {
+                condition: (data) => data?.popupEnabled,
+              },
+            },
+            {
+              name: 'popupButtonUrl',
+              type: 'text',
+              label: 'Lien du bouton',
+              admin: {
+                condition: (data) => data?.popupEnabled,
+              },
+            },
+          ],
+        },
+        {
           label: 'SEO',
           fields: [
             {

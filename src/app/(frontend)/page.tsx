@@ -6,6 +6,7 @@ import { ContactBannerSection } from '@/components/ContactBannerSection'
 import { OpeningHoursCard } from '@/components/OpeningHoursCard'
 import { AnimateIn } from '@/components/AnimateIn'
 import { MarqueeStrip } from '@/components/MarqueeStrip'
+import { PopupModal } from '@/components/PopupModal'
 
 export const revalidate = 60 // Revalidate every 60 seconds
 
@@ -18,12 +19,24 @@ interface HourEntry {
   closeEvening?: string | null
 }
 
+interface PopupImage {
+  url?: string
+  alt?: string
+}
+
 interface SiteSettings {
   heroTitle?: string
   heroSubtitle?: string
   phone?: string
   address?: string
   city?: string
+  popupEnabled?: boolean
+  popupTitle?: string | null
+  popupSubtitle?: string | null
+  popupContent?: string | null
+  popupImage?: PopupImage | null
+  popupButtonText?: string | null
+  popupButtonUrl?: string | null
 }
 
 interface OpeningHoursData {
@@ -87,6 +100,18 @@ export default async function HomePage() {
 
   return (
     <>
+      {settings?.popupEnabled && (
+        <PopupModal
+          title={settings.popupTitle}
+          subtitle={settings.popupSubtitle}
+          content={settings.popupContent}
+          imageUrl={settings.popupImage?.url}
+          imageAlt={settings.popupImage?.alt}
+          buttonText={settings.popupButtonText}
+          buttonUrl={settings.popupButtonUrl}
+        />
+      )}
+
       <HeroSection title={heroTitle} subtitle={heroSubtitle} phone={phone} />
 
       <StorySection />

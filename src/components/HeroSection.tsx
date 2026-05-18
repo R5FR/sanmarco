@@ -177,25 +177,19 @@ export function HeroSection({ title, subtitle, phone }: HeroSectionProps) {
         </motion.div>
       </motion.div>
 
-      {/* Bottom wave */}
-      <div className="absolute bottom-0 left-0 right-0 z-10">
-        <svg viewBox="0 0 1440 90" fill="none" preserveAspectRatio="none" className="w-full h-16 md:h-20">
-          <defs>
-            <pattern id="wave-grain" x="0" y="0" width="400" height="400" patternUnits="userSpaceOnUse">
-              <rect width="400" height="400" fill="oklch(0.902 0.040 72)" />
-              <image
-                href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.48 0.82' numOctaves='5' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.16'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E"
-                width="400"
-                height="400"
-              />
-            </pattern>
-          </defs>
-          <path
-            d="M0 90h1440V45C1340 70 1180 80 960 65 740 50 480 30 240 45 120 52 60 55 0 50v40z"
-            fill="url(#wave-grain)"
-          />
-        </svg>
-      </div>
+      {/* Bottom — short gradient fade into background */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-24 z-10 pointer-events-none"
+        style={{
+          background: `linear-gradient(to bottom,
+            transparent 0%,
+            color-mix(in oklch, var(--background) 30%, transparent) 40%,
+            color-mix(in oklch, var(--background) 70%, transparent) 68%,
+            color-mix(in oklch, var(--background) 92%, transparent) 88%,
+            var(--background) 100%
+          )`,
+        }}
+      />
     </section>
   )
 }

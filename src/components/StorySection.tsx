@@ -136,17 +136,6 @@ export function StorySection() {
               />
             </motion.div>
 
-            {/* Year badge — inside image on mobile, overflowing on desktop */}
-            <motion.div
-              className="absolute bottom-4 right-4 md:-bottom-4 md:right-6 rounded-2xl bg-primary px-4 py-3 md:px-5 md:py-4 text-primary-foreground shadow-xl shadow-primary/30"
-              initial={{ opacity: 0, scale: 0.5, rotate: 6 }}
-              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring', stiffness: 200, damping: 18, delay: 0.45 }}
-            >
-              <p className="font-display text-2xl md:text-3xl font-bold leading-none">{years}</p>
-              <p className="text-xs text-primary-foreground/75 mt-0.5">ans d&apos;expérience</p>
-            </motion.div>
           </div>
 
         </div>
