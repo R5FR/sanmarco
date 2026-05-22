@@ -203,18 +203,7 @@ export default async function InfosPage() {
                       <div>
                         <h3 className="font-medium text-sm">En transports</h3>
                         <p className="mt-1 text-sm text-muted-foreground">
-                          Gare de Chaville — Rive Gauche ou Chaville — Vélizy (10 min à pied).
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground">
-                        <ParkingCircle className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-sm">Parking</h3>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          Stationnement disponible devant le restaurant et dans les rues adjacentes.
+                          Gare de Chaville — Rive Gauche ou Chaville — Vélizy (5-10 min à pied).
                         </p>
                       </div>
                     </div>
@@ -250,13 +239,6 @@ export default async function InfosPage() {
                       <h3 className="text-sm font-medium">À emporter</h3>
                       <p className="mt-1 text-xs text-muted-foreground">
                         Commandez et récupérez vos plats
-                      </p>
-                    </div>
-                    <div className="group rounded-xl bg-muted/40 p-5 text-center transition-all duration-300 hover:bg-primary/5">
-                      <Car className="mx-auto mb-3 h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110" />
-                      <h3 className="text-sm font-medium">Livraison</h3>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        Livraison à domicile sur Chaville
                       </p>
                     </div>
                   </div>

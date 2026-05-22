@@ -75,31 +75,39 @@ export function HeroSection({ title, subtitle, phone }: HeroSectionProps) {
   const indicatorOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
 
   return (
-    <section ref={ref} className="relative min-h-[96vh] flex items-center justify-center overflow-hidden">
-      {/* Parallax + scale background */}
-      <motion.div
-        style={{ y: bgY, scale: bgScale }}
-        className="absolute inset-0 origin-center"
+    <section ref={ref} className="relative min-h-[140vh] flex items-start md:items-center justify-center overflow-hidden">
+      {/* Background + overlay — masked at bottom for clean fade into page */}
+      <div
+        className="absolute inset-0"
+        style={{
+          maskImage: 'linear-gradient(to bottom, black 71%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 71%, transparent 100%)',
+        }}
       >
-        <Image
-          src={heroImg}
-          alt="Ambiance San Marco le soir"
-          fill
-          className="object-cover object-[center_70%]"
-          priority
-        />
-      </motion.div>
+        <motion.div
+          style={{ y: bgY, scale: bgScale }}
+          className="absolute inset-0 origin-center"
+        >
+          <Image
+            src={heroImg}
+            alt="Ambiance San Marco le soir"
+            fill
+            className="object-cover object-[center_70%]"
+            priority
+          />
+        </motion.div>
 
-      {/* Overlay — darkens on scroll exit */}
-      <motion.div
-        style={{ opacity: overlayOpacity }}
-        className="hero-overlay absolute inset-0"
-      />
+        {/* Overlay — darkens on scroll exit */}
+        <motion.div
+          style={{ opacity: overlayOpacity }}
+          className="hero-overlay absolute inset-0"
+        />
+      </div>
 
       {/* Content — floats up + fades on scroll */}
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="container relative z-10 mx-auto max-w-7xl px-6 py-28 md:py-40"
+        className="container relative z-10 mx-auto max-w-7xl px-6 pt-28 pb-16 md:py-40"
       >
         <div className="mx-auto max-w-3xl text-center">
           {/* Eyebrow */}
@@ -177,19 +185,6 @@ export function HeroSection({ title, subtitle, phone }: HeroSectionProps) {
         </motion.div>
       </motion.div>
 
-      {/* Bottom — short gradient fade into background */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-24 z-10 pointer-events-none"
-        style={{
-          background: `linear-gradient(to bottom,
-            transparent 0%,
-            color-mix(in oklch, var(--background) 30%, transparent) 40%,
-            color-mix(in oklch, var(--background) 70%, transparent) 68%,
-            color-mix(in oklch, var(--background) 92%, transparent) 88%,
-            var(--background) 100%
-          )`,
-        }}
-      />
     </section>
   )
 }
